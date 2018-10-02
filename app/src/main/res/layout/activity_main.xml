@@ -38,4 +38,15 @@
         android:text="Call"
         app:layout_constraintStart_toEndOf="@+id/btDial"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btSms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="16dp"
+        android:text="SMS"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btHomepage" />
 </android.support.constraint.ConstraintLayout>
