@@ -6,19 +6,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog;
+    protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog, btTts;
     protected TextView tvRecog;
+    protected EditText etTts;
+    protected TextToSpeech tts;
     private static int CODE_RECOG = 1215;
 
     @Override
@@ -74,12 +78,21 @@ public class MainActivity extends AppCompatActivity {
                 voiceRecog();
             }
         });
+        etTts = (EditText) findViewById(R.id.etTts);
+        btTts = (Button) findViewById(R.id.btTts);
+        btTts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str = etTts.getText().toString();
+            }
+        });
     }
 
     private void voiceRecog() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.KOREAN);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Please speak.");
         startActivityForResult(intent, CODE_RECOG);
     }
 

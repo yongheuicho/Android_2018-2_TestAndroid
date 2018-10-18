@@ -1,3 +1,3 @@
 git add --all
-git commit -m "[2018-10-18] add speech recognition"
+git commit -m "[2018-10-18] add TTS"
 git push -u origin master
