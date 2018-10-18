@@ -18,7 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog, btTts;
     protected TextView tvRecog;
     protected EditText etTts;
@@ -84,8 +84,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String str = etTts.getText().toString();
+                tts.speak(str, TextToSpeech.QUEUE_FLUSH, null, null);
             }
         });
+        tts = new TextToSpeech(this, this);
     }
 
     private void voiceRecog() {
@@ -105,6 +107,15 @@ public class MainActivity extends AppCompatActivity {
                 String sRecog = arList.get(0);
                 tvRecog.setText(sRecog);
             }
+        }
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            tts.setLanguage(Locale.KOREAN);
+            tts.setPitch(1.0f);
+            tts.setSpeechRate(1.0f);
         }
     }
 }
