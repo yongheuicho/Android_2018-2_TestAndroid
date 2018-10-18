@@ -1,6 +1,7 @@
 package kr.ac.mokwon.ice.testandroid;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -12,12 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog;
     protected TextView tvRecog;
-    private static int CODE_RECOG = 1234;
+    private static int CODE_RECOG = 1215;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,5 +81,17 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.KOREAN);
         startActivityForResult(intent, CODE_RECOG);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODE_RECOG) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                ArrayList<String> arList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                String sRecog = arList.get(0);
+                tvRecog.setText(sRecog);
+            }
+        }
     }
 }
