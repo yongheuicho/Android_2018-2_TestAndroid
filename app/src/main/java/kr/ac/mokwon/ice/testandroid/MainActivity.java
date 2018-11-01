@@ -19,11 +19,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
-    protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog, btTts;
+    protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog, btTts,
+            btEcho;
     protected TextView tvRecog;
-    protected EditText etTts;
+    protected EditText etTts, etDelay;
     protected TextToSpeech tts;
-    private static int CODE_RECOG = 1215;
+    private static final int CODE_RECOG = 1215, CODE_ECHO = 1227;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         btRecog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                voiceRecog();
+                voiceRecog(CODE_RECOG);
             }
         });
         etTts = (EditText) findViewById(R.id.etTts);
@@ -88,24 +89,41 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
         tts = new TextToSpeech(this, this);
+        btEcho = (Button) findViewById(R.id.btEcho);
+        btEcho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                voiceRecog(CODE_ECHO);
+            }
+        });
+        etDelay = (EditText) findViewById(R.id.etDelay);
     }
 
-    private void voiceRecog() {
+    private void voiceRecog(int nCode) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.KOREAN);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Please speak.");
-        startActivityForResult(intent, CODE_RECOG);
+        startActivityForResult(intent, nCode);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODE_RECOG) {
-            if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            if (requestCode == CODE_RECOG) {
                 ArrayList<String> arList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 String sRecog = arList.get(0);
                 tvRecog.setText(sRecog);
+            } else if (requestCode == CODE_ECHO) {
+                ArrayList<String> arList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                String sRecog = arList.get(0);
+                try {
+                    Thread.sleep(5000);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
