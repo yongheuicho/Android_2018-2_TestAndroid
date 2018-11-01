@@ -84,8 +84,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         btTts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = etTts.getText().toString();
-                tts.speak(str, TextToSpeech.QUEUE_FLUSH, null, null);
+                speakStr(etTts.getText().toString());
             }
         });
         tts = new TextToSpeech(this, this);
@@ -107,6 +106,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         startActivityForResult(intent, nCode);
     }
 
+    private void speakStr(String str) {
+        tts.speak(str, TextToSpeech.QUEUE_FLUSH, null, null);
+        while (tts.isSpeaking()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -118,12 +128,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             } else if (requestCode == CODE_ECHO) {
                 ArrayList<String> arList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 String sRecog = arList.get(0);
+                String sDelay = etDelay.getText().toString();
+                int nDelay = Integer.parseInt(sDelay); // in sec
                 try {
-                    Thread.sleep(5000);
-
+                    Thread.sleep(nDelay*1000); // in msec
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                speakStr(sRecog);
             }
         }
     }
