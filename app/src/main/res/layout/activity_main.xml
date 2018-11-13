@@ -79,7 +79,7 @@
         android:id="@+id/etTts"
         android:layout_width="246dp"
         android:layout_height="43dp"
-        android:layout_marginBottom="328dp"
+        android:layout_marginBottom="340dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:ems="10"
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="28dp"
         android:layout_marginRight="28dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="120dp"
         android:text="TTS"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -103,7 +103,7 @@
         android:id="@+id/btEcho"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="280dp"
+        android:layout_marginBottom="292dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:text="Echo"
@@ -112,11 +112,11 @@
 
     <EditText
         android:id="@+id/etDelay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="276dp"
-        android:layout_marginLeft="128dp"
-        android:layout_marginStart="128dp"
+        android:layout_width="114dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="292dp"
+        android:layout_marginLeft="104dp"
+        android:layout_marginStart="104dp"
         android:ems="10"
         android:inputType="number"
         android:text="5"
@@ -130,5 +130,27 @@
         android:text="Contact"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivBitmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="240dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/alert_dark_frame" />
+
+    <Button
+        android:id="@+id/btBitmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="292dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginRight="68dp"
+        android:text="Bitmap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

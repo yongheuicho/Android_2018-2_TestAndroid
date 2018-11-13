@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +24,13 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog, btTts,
-            btEcho, btContact;
+            btEcho, btContact, btBitmap;
     protected TextView tvRecog;
     protected EditText etTts, etDelay;
+    public ImageView ivBitmap;
     protected TextToSpeech tts;
     private static final int CODE_RECOG = 1215, CODE_ECHO = 1227, CODE_CONTACT = 1529;
+    protected String sBitmapUrl = "https://sites.google.com/site/yongheuicho/_/rsrc/1313446792839/config/customLogo.gif";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +109,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setData(ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                 startActivityForResult(intent, CODE_CONTACT);
+            }
+        });
+        ivBitmap = (ImageView) findViewById(R.id.ivBitmap);
+        btBitmap = (Button) findViewById(R.id.btBitmap);
+        btBitmap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new BitmapRunnable(ivBitmap, sBitmapUrl)).start();
             }
         });
     }
