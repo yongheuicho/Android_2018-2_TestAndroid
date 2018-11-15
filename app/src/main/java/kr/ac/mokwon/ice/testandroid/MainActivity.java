@@ -27,7 +27,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog, btTts,
-            btEcho, btContact, btBitmap;
+            btEcho, btContact, btBitmap, btToastPs;
     protected TextView tvRecog;
     protected EditText etTts, etDelay;
     public ImageView ivBitmap;
@@ -127,6 +127,51 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         commStateListener = new CommStateListener();
+        btToastPs = (Button) findViewById(R.id.btToastPs);
+        btToastPs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toastPhoneState();
+            }
+        });
+    }
+
+    private void toastPhoneState() {
+        int nPhoneType = telephonyManager.getPhoneType();
+        int nNetworkType = telephonyManager.getNetworkType();
+        String sPhoneType;
+        switch (nPhoneType) {
+            case TelephonyManager.PHONE_TYPE_GSM:
+                sPhoneType = "Voice: GSM";
+                break;
+            case TelephonyManager.PHONE_TYPE_CDMA:
+                sPhoneType = "Voice: CDMA";
+                break;
+            case TelephonyManager.PHONE_TYPE_SIP:
+                sPhoneType = "Voice: SIP";
+                break;
+            default:
+                sPhoneType = "Voice: 코드 번호 = " + nPhoneType;
+        }
+        String sNetworkType;
+        switch (nNetworkType) {
+            case TelephonyManager.NETWORK_TYPE_CDMA:
+                sNetworkType = "Data: 2G CDMA";
+                break;
+            case TelephonyManager.NETWORK_TYPE_UMTS:
+                sNetworkType = "Data: 3G UMTS";
+                break;
+            case TelephonyManager.NETWORK_TYPE_HSPAP:
+                sNetworkType = "Data: 3G HSPA+";
+                break;
+            case TelephonyManager.NETWORK_TYPE_LTE:
+                sNetworkType = "Data: 4G LTE";
+                break;
+            default:
+                sNetworkType = "Data: 코드 번호 = " + nNetworkType;
+        }
+        Toast.makeText(this, sPhoneType, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, sNetworkType, Toast.LENGTH_SHORT).show();
     }
 
     private void voiceRecog(int nCode) {
