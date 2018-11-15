@@ -12,6 +12,8 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telecom.TelecomManager;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected TextToSpeech tts;
     private static final int CODE_RECOG = 1215, CODE_ECHO = 1227, CODE_CONTACT = 1529;
     protected String sBitmapUrl = "https://sites.google.com/site/yongheuicho/_/rsrc/1313446792839/config/customLogo.gif";
+    protected TelephonyManager telephonyManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 new Thread(new BitmapRunnable(ivBitmap, sBitmapUrl)).start();
             }
         });
+
+        telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
     }
 
     private void voiceRecog(int nCode) {
