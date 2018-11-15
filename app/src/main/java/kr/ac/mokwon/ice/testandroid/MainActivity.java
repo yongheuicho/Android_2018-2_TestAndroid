@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.TelecomManager;
+import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private static final int CODE_RECOG = 1215, CODE_ECHO = 1227, CODE_CONTACT = 1529;
     protected String sBitmapUrl = "https://sites.google.com/site/yongheuicho/_/rsrc/1313446792839/config/customLogo.gif";
     protected TelephonyManager telephonyManager;
+    protected CommStateListener commStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
 
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        commStateListener = new CommStateListener();
     }
 
     private void voiceRecog(int nCode) {
@@ -206,5 +209,17 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             tts.setPitch(1.0f);
             tts.setSpeechRate(1.0f);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        telephonyManager.listen(commStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+    }
+
+    @Override
+    protected void onPause() {
+        telephonyManager.listen(commStateListener, PhoneStateListener.LISTEN_NONE);
+        super.onPause();
     }
 }
