@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         });
 
         telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        commStateListener = new CommStateListener();
+        commStateListener = new CommStateListener(telephonyManager, this);
         btToastPs = (Button) findViewById(R.id.btToastPs);
         btToastPs.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
         Toast.makeText(this, sPhoneType, Toast.LENGTH_SHORT).show();
         Toast.makeText(this, sNetworkType, Toast.LENGTH_SHORT).show();
+        int nRssi = commStateListener.nRssi;
+        Toast.makeText(this, "RSSI = " + nRssi, Toast.LENGTH_SHORT).show();
     }
 
     private void voiceRecog(int nCode) {
