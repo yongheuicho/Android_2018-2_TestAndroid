@@ -13,13 +13,17 @@ public class PhoneCallService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        int nResult = super.onStartCommand(intent, flags, startId);
+    public void onCreate() {
+        super.onCreate();
         phoneCallReceiver = new PhoneCallReceiver();
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_NEW_OUTGOING_CALL);
         registerReceiver(phoneCallReceiver, intentFilter);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "Service started.", Toast.LENGTH_SHORT).show();
-        return nResult;
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override

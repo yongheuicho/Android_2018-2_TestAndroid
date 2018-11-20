@@ -18,7 +18,7 @@ public class PhoneCallReceiver extends BroadcastReceiver {
             Toast.makeText(context, "Phone # = " + sPhoneNum, Toast.LENGTH_SHORT).show();
         } else if (action.equals(Intent.ACTION_CALL_BUTTON)) {
             String sKey = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
-            Toast.makeText(context, "Key = " + sKey, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Call button = " + sKey, Toast.LENGTH_SHORT).show();
         }
     }
 }

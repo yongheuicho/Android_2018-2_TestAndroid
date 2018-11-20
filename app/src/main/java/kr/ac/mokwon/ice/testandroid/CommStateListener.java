@@ -24,6 +24,6 @@ public class CommStateListener extends PhoneStateListener {
             nRssi = signalStrength.getGsmSignalStrength();
         else if (nPhoneType == TelephonyManager.PHONE_TYPE_CDMA)
             nRssi = signalStrength.getCdmaDbm();
-        Toast.makeText(context, "RSSI = " + nRssi, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "RSSI = " + nRssi, Toast.LENGTH_SHORT).show();
     }
 }
