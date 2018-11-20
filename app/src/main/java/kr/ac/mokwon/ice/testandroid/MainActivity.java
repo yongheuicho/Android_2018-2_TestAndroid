@@ -27,12 +27,13 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog, btTts,
-            btEcho, btContact, btBitmap, btToastPs;
+            btEcho, btContact, btBitmap, btToastPs, btService;
     protected TextView tvRecog;
     protected EditText etTts, etDelay;
     public ImageView ivBitmap;
     protected TextToSpeech tts;
     private static final int CODE_RECOG = 1215, CODE_ECHO = 1227, CODE_CONTACT = 1529;
+    protected boolean bService = false;
     protected String sBitmapUrl = "https://sites.google.com/site/yongheuicho/_/rsrc/1313446792839/config/customLogo.gif";
     protected TelephonyManager telephonyManager;
     protected CommStateListener commStateListener;
@@ -134,6 +135,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 toastPhoneState();
             }
         });
+
+        btService = (Button) findViewById(R.id.btService);
+        btService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateService();
+            }
+        });
+    }
+
+    private void updateService() {
+        Intent intent = new Intent(this, PhoneCallService.class);
+        if (bService) {
+            stopService(intent);
+            bService = false;
+            btService.setText("Start Svc");
+        } else {
+            startService(intent);
+            bService = true;
+            btService.setText("Stop Svc");
+        }
+
     }
 
     private void toastPhoneState() {
@@ -268,5 +291,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onPause() {
         telephonyManager.listen(commStateListener, PhoneStateListener.LISTEN_NONE);
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (bService) {
+            Intent intent = new Intent(this, PhoneCallService.class);
+            stopService(intent);
+        }
+        super.onDestroy();
     }
 }
