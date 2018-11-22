@@ -26,4 +26,20 @@ public class CommStateListener extends PhoneStateListener {
             nRssi = signalStrength.getCdmaDbm();
         //Toast.makeText(context, "RSSI = " + nRssi, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onCallStateChanged(int state, String incomingNumber) {
+        super.onCallStateChanged(state, incomingNumber);
+        switch (state) {
+            case TelephonyManager.CALL_STATE_RINGING:
+                Toast.makeText(context, "Ringing: " + incomingNumber, Toast.LENGTH_SHORT).show();
+                break;
+            case TelephonyManager.CALL_STATE_OFFHOOK:
+                Toast.makeText(context, "Offhook: " + incomingNumber, Toast.LENGTH_SHORT).show();
+                break;
+            case TelephonyManager.CALL_STATE_IDLE:
+                Toast.makeText(context, "Idle", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 }
