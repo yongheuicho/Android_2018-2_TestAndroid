@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected CommStateListener commStateListener;
     protected LocationManager locationManager;
     protected MyLocationListener myLocationListener;
+    protected SensorManager sensorManager;
+    protected Sensor sensorAccel;
+    protected MySensorListener mySensorListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +169,13 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 showLocation();
             }
         });
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mySensorListener = new MySensorListener(this);
+        if (sensorAccel != null) {
+            sensorManager.registerListener(mySensorListener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     private void speakLocation(double latitude, double longitude) {
