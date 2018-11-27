@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.speech.RecognizerIntent;
@@ -27,7 +28,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     protected Button btHomepage, btDial, btCall, btSms, btMap, btRecog, btTts,
-            btEcho, btContact, btBitmap, btToastPs, btService;
+            btEcho, btContact, btBitmap, btToastPs, btService, btLocation;
     protected TextView tvRecog;
     protected EditText etTts, etDelay;
     public ImageView ivBitmap;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected String sBitmapUrl = "https://sites.google.com/site/yongheuicho/_/rsrc/1313446792839/config/customLogo.gif";
     protected TelephonyManager telephonyManager;
     protected CommStateListener commStateListener;
+    protected LocationManager locationManager;
+    protected MyLocationListener myLocationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +146,28 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 updateService();
             }
         });
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        myLocationListener = new MyLocationListener();
+        long minTime = 1000; // in ms
+        float minDistance = 0;
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, myLocationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, myLocationListener);
+        btLocation = (Button) findViewById(R.id.btLocation);
+        btLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLocation();
+            }
+        });
+    }
+
+    private void showLocation() {
+        double latitude, longitude, altitude;
+        latitude = myLocationListener.latitude;
+        longitude = myLocationListener.longitude;
+        altitude = myLocationListener.altitude;
+        Toast.makeText(this, "Latitude: " + latitude + ", Longitude = " + longitude + ", Altitude  " + altitude, Toast.LENGTH_SHORT).show();
     }
 
     private void updateService() {
