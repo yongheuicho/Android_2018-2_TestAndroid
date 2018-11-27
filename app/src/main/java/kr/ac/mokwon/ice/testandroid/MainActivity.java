@@ -358,6 +358,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             Intent intent = new Intent(this, PhoneCallService.class);
             stopService(intent);
         }
+        sensorManager.unregisterListener(mySensorListener);
         super.onDestroy();
     }
 }
