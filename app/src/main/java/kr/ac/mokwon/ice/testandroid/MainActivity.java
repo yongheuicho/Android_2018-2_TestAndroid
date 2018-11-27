@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -23,7 +25,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
@@ -160,6 +164,24 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 showLocation();
             }
         });
+    }
+
+    private void speakLocation(double latitude, double longitude) {
+        Geocoder geocoder;
+        geocoder = new Geocoder(this, Locale.KOREAN);
+        List<Address> lsAddress;
+        try {
+            lsAddress = geocoder.getFromLocation(latitude, longitude, 1);
+            String address = lsAddress.get(0).getAddressLine(0);
+            String city = lsAddress.get(0).getLocality();
+            String state = lsAddress.get(0).getAdminArea();
+            String country = lsAddress.get(0).getCountryName();
+            String postalCode = lsAddress.get(0).getPostalCode();
+            String knownName = lsAddress.get(0).getFeatureName();
+            speakStr("현재 있는 나라는" + country + "입니다.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showLocation() {
